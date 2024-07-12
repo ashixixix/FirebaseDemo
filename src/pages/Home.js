@@ -14,14 +14,6 @@ export default function Home() {
 
   useEffect(() => {
     const ref = collection(db, 'articles');
-    // onSnapshot(ref, (snapshot)=>{
-    //     console.log(snapshot);
-    //     let results = []
-    //      snapshot.docs.forEach(doc => {
-    //        results.push({id: doc.id, ...doc.data()});
-    //      });
-    //     setArticles(results);
-    //   })
 
     getDocs(ref)
       .then((snapshot)=>{
@@ -41,16 +33,6 @@ export default function Home() {
     await deleteDoc(ref);
   }
 
-  const handleUpdate = async (id) => {
-    const ref = doc(db, 'articles', id)
-    await setDoc(doc(db, 'articles', id), {
-      author: "Los Angeles",
-      description: "california",
-      title: "USA"
-    });
-    
-  }
-
 
   
   return (
@@ -66,11 +48,8 @@ export default function Home() {
             onClick={() => handleDelete(article.id)}
             src={DeleteIcon} alt="delete icon" 
           />
-          <img
-            className="editIcon"
-            onClick={() => handleUpdate(article.id)}
-            src={EditIcon} alt="edit icon"
-            />
+
+          <Link className="editButton" to={`/edit/${article.id}`}>Edit</Link>
         </div>
       ))}
     </div>

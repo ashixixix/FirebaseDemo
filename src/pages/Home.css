@@ -18,7 +18,7 @@
     height: 3%;
   }
 
-  .editIcon{
+  .editButton{
     position: relative;
     filter: invert(50%);
     cursor: pointer;

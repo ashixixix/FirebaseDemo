@@ -43,7 +43,6 @@ function App() {
           <NavLink to="/about">About</NavLink>
           <NavLink to="/contact">Contact</NavLink>
           <NavLink to="/new">New Article</NavLink>
-          <NavLink to="/edit"></NavLink>
         </nav>
 
         <Routes>
@@ -52,7 +51,7 @@ function App() {
           <Route path="/contact" element={<Contact /> }/>
           <Route path="/articles/:urlId" element={<Article/> }/>
           <Route path="/new" element={<FormArticle /> }/>
-          <Route path="edit" element={<EditArticle />}/>
+          <Route path="/edit/:id" element={<EditArticle />}/>
           <Route path="/*" element={<Navigate to="/"/> }/>
         </Routes>
 

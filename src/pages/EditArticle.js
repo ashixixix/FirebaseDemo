@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {db} from '../firebase/config'
-import {getDocs, collection, deleteDoc, doc, setDoc, addDoc, onSnapshot} from 'firebase/firestore';
+import {getDocs, collection, deleteDoc, doc, setDoc, addDoc, getDoc, updateDoc, onSnapshot} from 'firebase/firestore';
 // styles
 import './create.css'
 
@@ -9,37 +9,39 @@ export default function Edit() {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [description, setDescription] = useState('')
-  
+  const { id } = useParams()
+  console.log(id)
+
   const navigate = useNavigate()
-  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()   
-    const article = {title,author,description};
-    const ref = collection(db, 'articles')
-    await addDoc(ref,article)
 
-    // setTitle("");
-    // setAuthor("");
-    // setDescription("");
+  useEffect(() => {
+    const fetchArticle = async () => {
+      const ref = doc(db, 'articles', id)
+      const docSnap = await getDoc(ref)
+      if (docSnap.exists()) {
+        const data = docSnap.data()
+        setTitle(data.title)
+        setAuthor(data.author)
+        setDescription(data.description)
+      }
+    }
+    fetchArticle()
+  }, [id])
 
+  const handleUpdate = async (e) => {
+    e.preventDefault()
+    const article = { title, author, description }
+    const ref = doc(db, 'articles', id)
+    await updateDoc(ref, article)
     navigate('/')
   }
 
-  const handleUpdate = async (id) => {
-    const ref = doc(db, 'articles', id)
-    await setDoc(doc(db, 'articles', id), {
-      author: "Los Angeles",
-      description: "california",
-      title: "USA"
-    });
-    
-  }
 
   return (
     <div className="create">
-      <h2 className="page-title">Add a New Recipe</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 className="page-title">EDIT ARTICLE:</h2>
+      <form onSubmit={handleUpdate}>
 
         <label>
           <span>Title:</span>
@@ -47,7 +49,7 @@ export default function Edit() {
             type="text" 
             onChange={(e) => setTitle(e.target.value)}
             value={title}
-            required
+            
           />
         </label>
         
@@ -57,7 +59,7 @@ export default function Edit() {
             type="text" 
             onChange={(e) => setAuthor(e.target.value)}
             value={author}
-            required
+            
           />
         </label>
 
@@ -66,11 +68,11 @@ export default function Edit() {
           <textarea 
             onChange={(e) => setDescription(e.target.value)}
             value={description}
-            required
+            
           />
         </label>
 
-        <button className="btn">submit</button>
+        <button className="btn">Edit</button>
       </form>
     </div>
   )
