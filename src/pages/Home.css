@@ -17,3 +17,10 @@
     width: 3%;
     height: 3%;
   }
+
+  .editIcon{
+    position: relative;
+    filter: invert(50%);
+    cursor: pointer;
+    float:right;
+  }

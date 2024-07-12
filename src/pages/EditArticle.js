@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {collection, addDoc} from 'firebase/firestore';
 import {db} from '../firebase/config'
-
+import {getDocs, collection, deleteDoc, doc, setDoc, addDoc, onSnapshot} from 'firebase/firestore';
 // styles
 import './create.css'
 
-export default function Create() {  
+export default function Edit() {  
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [description, setDescription] = useState('')
@@ -25,6 +24,16 @@ export default function Create() {
     // setDescription("");
 
     navigate('/')
+  }
+
+  const handleUpdate = async (id) => {
+    const ref = doc(db, 'articles', id)
+    await setDoc(doc(db, 'articles', id), {
+      author: "Los Angeles",
+      description: "california",
+      title: "USA"
+    });
+    
   }
 
   return (

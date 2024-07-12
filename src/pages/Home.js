@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import {getDocs, collection, deleteDoc, doc, onSnapshot} from 'firebase/firestore';
+import {getDocs, collection, deleteDoc, doc, setDoc, onSnapshot} from 'firebase/firestore';
 import {db} from '../firebase/config'
 import { useEffect,useState } from 'react';
 import DeleteIcon from '../assets/delete.svg'
+import EditIcon from '../assets/edit.svg'
 
 // styles
 import './Home.css'
@@ -34,11 +35,24 @@ export default function Home() {
   },[])
 
   
+  
   const handleDelete = async (id) => {
     const ref = doc(db, 'articles', id)
     await deleteDoc(ref);
   }
 
+  const handleUpdate = async (id) => {
+    const ref = doc(db, 'articles', id)
+    await setDoc(doc(db, 'articles', id), {
+      author: "Los Angeles",
+      description: "california",
+      title: "USA"
+    });
+    
+  }
+
+
+  
   return (
     <div className="home">
       <h2>Articles</h2>      
@@ -52,6 +66,11 @@ export default function Home() {
             onClick={() => handleDelete(article.id)}
             src={DeleteIcon} alt="delete icon" 
           />
+          <img
+            className="editIcon"
+            onClick={() => handleUpdate(article.id)}
+            src={EditIcon} alt="edit icon"
+            />
         </div>
       ))}
     </div>
