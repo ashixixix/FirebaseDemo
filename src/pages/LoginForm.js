@@ -18,8 +18,6 @@ const LoginForm = ({ onLogin }) => {
                 const userData = doc.data();
                 if (userData.username === username && userData.pass === password){
                     onLogin(true);
-                } else {
-                    alert('Invalid credentials');
                 }
             });
         } catch (error){
